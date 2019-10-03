@@ -5,8 +5,10 @@
 		public 
 			$mysqli
 			, $res
+			, $res1
 			, $row
 			, $debug = false
+			, $act1
 		;
 	
 		function __construct() {
@@ -35,6 +37,21 @@
 			}
 		}
 		
+		public function emptyAct1 () {
+		
+			$this -> act1 = array (
+			
+				'id' => 0
+				, 'pav' => ''
+				, 'apras' => ''
+				, 'flag_poilsines' => 0
+				, 'flag_pazintines' => 0
+				, 'flag_viskas_isk' => 0
+				, 'flag_laisv_pasir' => 0
+				
+			);
+		}
+		
 		public function prideti ( $fields_values ) {
 		
 			$fields = array_keys ( $fields_values );
@@ -55,6 +72,34 @@
 			);
 		}
 		
+		public function pakeisti ( $fields_values ) {
+		
+			$sets = array();
+		
+			foreach ( $fields_values as $field => $value ) {
+			
+				if ( $field != 'id' ) {
+			
+					$sets[] = "`" . $field . "`='" . $value . "'"; 
+				}
+			}
+			
+			$qw_upd = 
+					"
+				UPDATE `keliones` 
+				SET
+					" . implode ( ', ', $sets ) . "
+				WHERE
+					`id`=" . $fields_values [ 'id' ] . "
+					";
+
+			echo $qw_upd;
+
+			$this -> res = $this -> mysqli -> query ( 
+				$qw_upd 
+			);
+		}		
+		
 		public function paiimti() {
 		
 			$this -> res = $this -> mysqli -> query ( 
@@ -65,6 +110,43 @@
 					`keliones` 
 					"
 			);
+		}
+		
+		public function paiimti1( $id ) {
+		
+			$qw_get1 =
+					"
+				SELECT SQL_CALC_FOUND_ROWS 
+					`keliones`.*
+				FROM 
+					`keliones`
+				WHERE
+					`id`=" . intval ( $id ) . "
+					";
+			echo $qw_get1;
+			$this -> res1 = $this -> mysqli -> query ( $qw_get1 );
+			
+			return 
+				$this -> act1  = $this ->res1 -> fetch_assoc()
+				;
+		}
+		
+		public function ismesti ( $id ) {
+		
+			$qw_get1 =
+					"
+				DELETE
+				FROM 
+					`keliones`
+				WHERE
+					`id`=" . intval ( $id ) . "
+					";
+			echo $qw_get1;
+			$this -> res1 = $this -> mysqli -> query ( $qw_get1 );
+			
+			header ( 'Location: http://' . $_SERVER [ 'SERVER_NAME' ] );
+				;		
+		
 		}
 		
 		public function fetchRow () {

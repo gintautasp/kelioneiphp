@@ -14,8 +14,15 @@
 	}
 	
 	function db_row_html ( $row ) {
+	
+		$data = array();
+	
+		foreach ( $row as $name => $value ) {
+		
+			$data[] = $name . '="' . $value .'"';
+		}
 ?>
-			<tr>
+			<tr data-<?= implode ( ' data-',  $data ) ?>>
 <?php	
 		foreach ( $row as $name => $value ) {
 
@@ -35,6 +42,10 @@
 <?php
 		}
 ?>
+		<td>
+			<a class="zalias" href="?id=<?= $row [ 'id' ]  ?>">redaguoti</a>
+			<a class="raudonas" href="?id=<?= $row [ 'id' ]  ?>&del=1">šalinti</a>
+		</td>
 		</tr>
 <?php		
 	}
