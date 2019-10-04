@@ -3,9 +3,17 @@
 
 	$dir_file = __DIR__;
 
+	$flag_import_begikai = false;
 
 	$failo_vardas = $dir_file . '/LBMA-taure-2019.csv';
 	$csv_delim = ",";
+	
+	if ( $flag_import_begikai  ) {
+	
+		include 'db_table.class.php';
+		
+		$begikai = new DbTable ( 'begikai' );
+	}
 ?>
 <html>
 <head>
@@ -44,12 +52,37 @@
 	
 	if  ( ( $handle = fopen ( $failo_vardas, "r" ) ) !== FALSE ) {
 	
+		set_time_limit ( 0 );
+	
 		while ( ( $data = fgetcsv ( $handle, 0, $csv_delim ) ) !== FALSE ) {
 		
-			$vardas = $data [ 5 ];
+			if ( $row > 3 ) {
+		
+				if ( $flag_import_begikai  ) {
+		
+		
+					$fields_values = array (
+					
+						'vardas' => $begikai -> mysqli -> real_escape_string ($data [ 2 ] )
+						, 'pavarde' => $begikai -> mysqli -> real_escape_string ( $data [ 3 ] )
+						, 'miestas' => $begikai -> mysqli -> real_escape_string ( $data [ 4 ] )
+						, 'klubas' => $begikai -> mysqli -> real_escape_string ( $data [ 5  ] )	
+						, 'amzius' => intval ( $data [ 6 ] )
+						, 'amz_grupe' => $begikai -> mysqli -> real_escape_string ( $data [ 7 ] )
+					);
+					
+					if ( ! $begikai -> prideti ( $fields_values ) )  { 
+					
+						echo '</table>klaida eil.: ' . $row . '<br>';
+						print_r ( $begikai -> mysqli -> error );
+						exit;
+					}
+				}
+			}
+			
 			$num = count ( $data );
 ?>	
-			<tr><th><?= $row . ' (' . $num . ') ' ?></th>
+			<tr><th><?= $row  ?></th>
 <?php			
 			for ( $c=0; $c < $num; $c++ ) {
 ?>			
@@ -63,6 +96,7 @@
 		}
 		fclose($handle);
 	}
+	$begikai -> close();
 ?>	
 </table>
 </body>
