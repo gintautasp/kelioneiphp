@@ -5,7 +5,7 @@
 
 
 	$failo_vardas = $dir_file . '/LBMA-taure-2019.csv';
-	$csv_delim = ";";
+	$csv_delim = ",";
 ?>
 <html>
 <head>
@@ -47,11 +47,9 @@
 		while ( ( $data = fgetcsv ( $handle, 0, $csv_delim ) ) !== FALSE ) {
 		
 			$vardas = $data [ 5 ];
-			
-		
 			$num = count ( $data );
 ?>	
-			<tr><th><?= $row . '(' . $num . ')' ?></th>
+			<tr><th><?= $row . ' (' . $num . ') ' ?></th>
 <?php			
 			for ( $c=0; $c < $num; $c++ ) {
 ?>			
