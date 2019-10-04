@@ -84,11 +84,23 @@
 ?>	
 			<tr><th><?= $row  ?></th>
 <?php			
+			$suma_tasku = 0;
+
 			for ( $c=0; $c < $num; $c++ ) {
+			
+				if ( $c > 9  ) {
+				
+					$suma_tasku += intval ( $data [ $c ] );
+				}
+				if  ( $c < 16 ) {
 ?>			
-				<td><?= $data [ $c ] ?></td>
-<?php				
+					<td><?= $data [ $c ] ?></td>
+<?php	
+				}
 			}
+?>
+					<td class="<?= ( ( $suma_tasku == intval ($data [ 8 ] ) ) ? 'zalias' : 'raudonas'  ) ?>"><?= $suma_tasku ?></td>
+<?php			
 			$row++;
 ?>
 			</tr>
@@ -96,7 +108,11 @@
 		}
 		fclose($handle);
 	}
-	$begikai -> close();
+	
+	if ( $flag_import_begikai  ) {
+	
+		$begikai -> close();
+	}
 ?>	
 </table>
 </body>

@@ -1,0 +1,5 @@
+"Gravitacijos konstanta","$G=6.67e-11"
+"Kūno m1 masė","$m1=5.9742e24"
+"Kūno m2 masė","$m2=7.348e22"
+"Atstumas tarp kūnų","$r=40000000"
+"Traukos jėga","$F=$G * ( ( $m1 * $m2 ) / ( $r * $r ) )"
