@@ -46,20 +46,22 @@
 		while ( ( $data = fgetcsv ( $handle, 0, $csv_delim ) ) !== FALSE ) {
 			
 			$num = count ( $data );
-			$res = eval (  $data [ 1 ] );
+			eval ( '$' . $data [ 1 ] . $data [ 2 ] );
+			$evar  = $data [ 1 ];
 ?>	
 			<tr><th><?= $row  ?></th>
 
 			<th class="zalias"><?= $data [ 0 ]  ?></td>
-			<th class="zalias"><?= $data [ 1 ]  ?></td>
-			<th class="zalias"><?= $res  ?></td>				
+			<th ><?= $data [ 1 ]  ?></td>
+			<th ><?= $data [ 2 ]  ?></td>			
+			<th class="zalias"><?= $$evar  ?></td>				
 <?php			
 			$row++;
 ?>
 			</tr>
 <?php
 		}
-		fclose($handle);
+		fclose ( $handle );
 	}
 ?>	
 </table>
